@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TaskManagerData.Models
+@model HomeViewModel
+
+@{
+  ViewData["Title"] = "Home Page";
+}
+
+<div>
+  <h1 class="display-4">გამარჯობა</h1>
+
+
+  <h5>სატესტოდ მონაცემთა ბაზაში დარეგისტრირებულია შემდეგი ინფორმაცია</h5>
+
+  <p>როლები</p>
+  <ul>
+    @{
+      foreach (IdentityRole role in Model.Roles)
+      {
+        <li>@role.Name</li>
+      }
+    }
+  </ul>
+
+  <p>მომხმარებლები</p>
+  <ul>
+    @{
+      foreach (IdentityUser user in Model.Users)
+      {
+        <li>@user.Email</li>
+      }
+    }
+  </ul>
+
+  <p>სტატუსები</p>
+  <ul>
+    @{
+      foreach (Status status in Model.Statuses)
+      {
+        <li>@status.SttName</li>
+      }
+    }
+  </ul>
+
+  <p>პრიორიტეტები</p>
+  <ul>
+    @{
+      foreach (Priority priority in Model.Priorities)
+      {
+        <li>@priority.PrtName</li>
+      }
+    }
+  </ul>
+
+</div>
