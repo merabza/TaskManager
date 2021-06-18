@@ -15,5 +15,6 @@ namespace TaskManagerData.Repository
     void Delete<T>(T entity) where T : class;
     void Update<T>(T entity) where T : class;
     Task<T> FindAsync<T>(int? id) where T : class;
+    void SetTaskAsDone(int id);
   }
 }

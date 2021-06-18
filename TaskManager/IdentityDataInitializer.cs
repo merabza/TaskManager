@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using TaskManager.Models;
 
@@ -10,9 +12,9 @@ namespace TaskManager
 
     private static readonly UserInfo[] UserInfos =
     {
-      new() {UserEmail = "user@example.com", Password = "user", RoleName = "User"},
-      new() {UserEmail = "support@example.com", Password = "support", RoleName = "Support"},
-      new() {UserEmail = "admin@example.com", Password = "admin", RoleName = "Admin"}
+      new() {UserEmail = "user@example.com", Password = "user", RoleName = ERole.User.ToString()},
+      new() {UserEmail = "support@example.com", Password = "support", RoleName = ERole.Support.ToString()},
+      new() {UserEmail = "admin@example.com", Password = "admin", RoleName = ERole.Admin.ToString()}
     };
 
 
@@ -35,7 +37,10 @@ namespace TaskManager
         IdentityUser user = new IdentityUser {UserName = userInfo.UserEmail, Email = userInfo.UserEmail};
         IdentityResult result = userManager.CreateAsync(user, userInfo.Password).Result;
         if (result.Succeeded) //თუ ყველაფერი რიგზეა, მივცეთ როლი
+        {
           userManager.AddToRoleAsync(user, userInfo.RoleName).Wait();
+        }
+
       }
 
     }
@@ -50,6 +55,19 @@ namespace TaskManager
         //თუ არ არსებობს, შევქმნათ
         IdentityRole role = new IdentityRole {Name = roleName};
         roleManager.CreateAsync(role).Wait();
+        roleManager.AddClaimAsync(role, new Claim(ClaimTypes.Role, roleName));
+        ERole rl = Enum.Parse<ERole>(roleName);
+        switch (rl)
+        {
+          case ERole.Admin:
+            break;
+          case ERole.User:
+            break;
+          case ERole.Support:
+            break;
+          default:
+            throw new ArgumentOutOfRangeException();
+        }
       }
     }
   }

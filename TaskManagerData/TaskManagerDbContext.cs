@@ -70,7 +70,7 @@ namespace TaskManagerData
         entity.Property(e => e.TskDescription).IsRequired().HasColumnName(nameof(Task.TskDescription).UnCapitalize())
           .HasMaxLength(250);
         entity.Property(e => e.PriorityId).HasColumnName(nameof(Task.PriorityId).UnCapitalize());
-        entity.Property(e => e.StatusId).HasColumnName(nameof(Task.StatusId).UnCapitalize());
+        entity.Property(e => e.StatusId).HasColumnName(nameof(Task.StatusId).UnCapitalize()).HasDefaultValue(1);//იმისათვის, რომ ახალი ამოცანა იყოს ყოველთვის New
         entity.HasOne(d => d.PriorityNavigation).WithMany(p => p.Tasks).HasForeignKey(d => d.PriorityId)
           .OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName($"FK_{tableName}_{nameof(Priority).Pluralize()}");
         entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Tasks).HasForeignKey(d => d.StatusId)

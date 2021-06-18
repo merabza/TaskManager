@@ -1,4 +1,8 @@
-﻿@model PaginatedList<TaskManagerData.Models.Task>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model PaginatedList<TaskManagerData.Models.Task>
 
 @{
   ViewData["Title"] = "Index";
@@ -29,6 +33,12 @@
       <th>
         <a asp-action="Index" asp-route-sortOrder="@ViewData["DescriptionSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Description</a>
       </th>
+      <th>
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["PrioritySortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Priority</a>
+      </th>
+      <th>
+        <a asp-action="Index" asp-route-sortOrder="@ViewData["StatusSortParam"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Status</a>
+      </th>
 
       <th></th>
     </tr>
@@ -36,18 +46,33 @@
   <tbody>
     @foreach (var item in Model)
     {
-      <tr>
-        <td>
-          @Html.DisplayFor(modelItem => item.TskTitle)
-        </td>
-        <td>
-          @Html.DisplayFor(modelItem => item.TskDescription)
-        </td>
-        <td>
-          <a asp-action="Edit" asp-route-id="@item.TskId">Edit</a> |
+    <tr>
+      <td>
+        @Html.DisplayFor(modelItem => item.TskTitle)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.TskDescription)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.PriorityNavigation.PrtName)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.StatusNavigation.SttName)
+      </td>
+      <td>
+        <a asp-action="Edit" asp-route-id="@item.TskId">Edit</a>
+        @if (User.IsInRole("Admin"))
+        {
+          <span> | </span>
           <a asp-action="Delete" asp-route-id="@item.TskId">Delete</a>
-        </td>
-      </tr>
+        }
+        @if (User.IsInRole("Admin") || User.IsInRole("Support"))
+        {
+          <span> | </span>
+          <a asp-action="Done" asp-route-id="@item.TskId">Done</a>
+        }
+      </td>
+    </tr>
     }
   </tbody>
 </table>

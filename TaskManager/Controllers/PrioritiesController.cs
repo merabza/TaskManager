@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ using TaskManagerData.Repository;
 
 namespace TaskManager.Controllers
 {
-
+  [Authorize(Roles = "Admin")]
   public class PrioritiesController : Controller
   {
     private readonly ILogger _logger;
@@ -58,7 +59,7 @@ namespace TaskManager.Controllers
     // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("EnrollmentDate,FirstMidName,LastName")]
+    public async Task<IActionResult> Create([Bind("PrtName")]
       Priority priority)
     {
       try

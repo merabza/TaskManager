@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using TaskManagerData.Models;
-using Task = TaskManagerData.Models.Task;
 
 namespace TaskManagerData.Repository
 {
@@ -40,6 +38,7 @@ namespace TaskManagerData.Repository
       if (entity == null) 
         return;
       _context.Entry(entity).State = EntityState.Added;
+      //_context.Add(entity);
       _context.SaveChanges();
     }
 
@@ -76,8 +75,17 @@ namespace TaskManagerData.Repository
       return await _context.Set<T>().FindAsync(id);
     }
 
-    
-
-
+    public void SetTaskAsDone(int id)
+    {
+      const string doneStatusName = "Done";
+      var doneStatus = _context.Statuses.SingleOrDefault(s => s.SttName == doneStatusName);
+      if ( doneStatus == null )
+        return;
+      var task = _context.Tasks.SingleOrDefault(s => s.TskId == id);
+      if ( task == null )
+        return;
+      task.StatusId = doneStatus.SttId;
+      _context.SaveChanges();
+    }
   }
 }
