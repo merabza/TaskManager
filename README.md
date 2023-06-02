@@ -1,4 +1,5 @@
 საცდელი ამოცანა
+(ეს საცდელიამოცანა გაკეთდა GPI ჰოლდინგში მიღებისას)
 
 ტექნოლოგიები:
 ASP.Net Core Web Application, EntityFrameworkCore (Code First, InMemoryDatabase)
